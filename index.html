@@ -21,40 +21,45 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/app.css" />
 </head>
-<body class="bg-light text-dark">
-  <header class="app-toolbar border-bottom bg-white sticky-top">
+<body class="bubble-ui text-dark">
+  <header class="app-toolbar bubble-topbar sticky-top">
     <div class="container-fluid py-2 d-flex flex-wrap align-items-center gap-3">
       <div class="d-flex align-items-center gap-2">
-        <span class="badge text-bg-primary">CLB</span>
-        <input id="projectName" class="form-control form-control-sm" type="text" value="My Component Library" />
+        <span class="bubble-pill">Bubble Studio</span>
+        <input id="projectName" class="form-control form-control-sm bubble-input" type="text" value="My Component Library" />
+      </div>
+      <div class="bubble-tab-group d-none d-md-flex">
+        <span class="bubble-tab active">Design</span>
+        <span class="bubble-tab">Workflow</span>
+        <span class="bubble-tab">Data</span>
       </div>
       <div class="d-flex flex-wrap align-items-center gap-2 ms-auto">
-        <button id="saveProject" class="btn btn-outline-primary btn-sm">Save</button>
-        <button id="loadProject" class="btn btn-outline-secondary btn-sm">Load</button>
-        <button id="resetProject" class="btn btn-outline-danger btn-sm">Reset</button>
+        <button id="saveProject" class="btn btn-outline-primary btn-sm bubble-btn">Save</button>
+        <button id="loadProject" class="btn btn-outline-secondary btn-sm bubble-btn">Load</button>
+        <button id="resetProject" class="btn btn-outline-danger btn-sm bubble-btn">Reset</button>
         <div class="vr"></div>
-        <select id="viewportPreset" class="form-select form-select-sm w-auto" aria-label="Viewport preset">
+        <select id="viewportPreset" class="form-select form-select-sm w-auto bubble-select" aria-label="Viewport preset">
           <option value="default">Default viewports</option>
           <option value="compact">Compact viewports</option>
           <option value="wide">Wide viewports</option>
         </select>
-        <div class="form-check form-switch">
+        <div class="form-check form-switch bubble-switch">
           <input class="form-check-input" type="checkbox" id="syncScroll" checked />
           <label class="form-check-label" for="syncScroll">Sync scroll</label>
         </div>
-        <div class="form-check form-switch">
+        <div class="form-check form-switch bubble-switch">
           <input class="form-check-input" type="checkbox" id="stackViewports" />
           <label class="form-check-label" for="stackViewports">Stack viewports</label>
         </div>
-        <button id="exportProject" class="btn btn-primary btn-sm">Export</button>
+        <button id="exportProject" class="btn btn-primary btn-sm bubble-btn bubble-primary">Export</button>
       </div>
     </div>
   </header>
 
-  <main class="container-fluid py-3">
+  <main class="container-fluid py-3 bubble-shell">
     <div class="row g-3">
-      <aside class="col-12 col-xl-4">
-        <div class="card shadow-sm mb-3">
+      <aside class="col-12 col-xl-4 bubble-sidebar">
+        <div class="card bubble-card mb-3">
           <div class="card-header d-flex align-items-center justify-content-between">
             <h6 class="mb-0">Components</h6>
             <span class="badge text-bg-secondary" id="componentCount">0</span>
@@ -66,7 +71,7 @@
           </div>
         </div>
 
-        <div class="card shadow-sm mb-3">
+        <div class="card bubble-card mb-3">
           <div class="card-header">
             <h6 class="mb-0">Brand &amp; Theme</h6>
           </div>
@@ -195,7 +200,7 @@
           </div>
         </div>
 
-        <div class="card shadow-sm">
+        <div class="card bubble-card">
           <div class="card-header">
             <h6 class="mb-0">Component Properties</h6>
           </div>
@@ -205,21 +210,21 @@
         </div>
       </aside>
 
-      <section class="col-12 col-xl-8">
-        <div class="card shadow-sm h-100">
-          <div class="card-header d-flex flex-wrap align-items-center justify-content-between">
-            <div class="btn-group" role="tablist">
+      <section class="col-12 col-xl-8 bubble-preview">
+        <div class="card bubble-card h-100">
+          <div class="card-header d-flex flex-wrap align-items-center justify-content-between bubble-preview-header">
+            <div class="btn-group bubble-pill-group" role="tablist">
               <button class="btn btn-outline-secondary active" data-preview-tab="component">Component</button>
               <button class="btn btn-outline-secondary" data-preview-tab="templates">Templates</button>
               <button class="btn btn-outline-secondary" data-preview-tab="kitchen">Kitchen Sink</button>
             </div>
             <div class="d-flex align-items-center gap-2">
-              <button class="btn btn-sm btn-outline-primary" id="copyHtml">Copy HTML</button>
-              <button class="btn btn-sm btn-outline-secondary" id="copyTokens">Copy Tokens</button>
-              <button class="btn btn-sm btn-outline-dark" id="copyCss">Copy CSS</button>
+              <button class="btn btn-sm btn-outline-primary bubble-btn" id="copyHtml">Copy HTML</button>
+              <button class="btn btn-sm btn-outline-secondary bubble-btn" id="copyTokens">Copy Tokens</button>
+              <button class="btn btn-sm btn-outline-dark bubble-btn" id="copyCss">Copy CSS</button>
             </div>
           </div>
-          <div class="card-body preview-area" id="previewArea">
+          <div class="card-body preview-area bubble-preview-area" id="previewArea">
             <div class="viewport-grid" id="viewportGrid">
               <div class="viewport" data-viewport="mobile">
                 <div class="viewport-header">Mobile · 375px</div>
