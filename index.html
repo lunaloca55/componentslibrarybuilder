@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Component Library Builder</title>
+  <!--
+    Run locally: open this file in a browser.
+    Limitations: ZIP export requires JSZip CDN (loaded automatically). If blocked, individual file downloads are used.
+  -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+  />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body class="bg-light text-dark">
+  <header class="app-toolbar border-bottom bg-white sticky-top">
+    <div class="container-fluid py-2 d-flex flex-wrap align-items-center gap-3">
+      <div class="d-flex align-items-center gap-2">
+        <span class="badge text-bg-primary">CLB</span>
+        <input id="projectName" class="form-control form-control-sm" type="text" value="My Component Library" />
+      </div>
+      <div class="d-flex flex-wrap align-items-center gap-2 ms-auto">
+        <button id="saveProject" class="btn btn-outline-primary btn-sm">Save</button>
+        <button id="loadProject" class="btn btn-outline-secondary btn-sm">Load</button>
+        <button id="resetProject" class="btn btn-outline-danger btn-sm">Reset</button>
+        <div class="vr"></div>
+        <select id="viewportPreset" class="form-select form-select-sm w-auto" aria-label="Viewport preset">
+          <option value="default">Default viewports</option>
+          <option value="compact">Compact viewports</option>
+          <option value="wide">Wide viewports</option>
+        </select>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="syncScroll" checked />
+          <label class="form-check-label" for="syncScroll">Sync scroll</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="stackViewports" />
+          <label class="form-check-label" for="stackViewports">Stack viewports</label>
+        </div>
+        <button id="exportProject" class="btn btn-primary btn-sm">Export</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container-fluid py-3">
+    <div class="row g-3">
+      <aside class="col-12 col-xl-4">
+        <div class="card shadow-sm mb-3">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">Components</h6>
+            <span class="badge text-bg-secondary" id="componentCount">0</span>
+          </div>
+          <div class="card-body">
+            <input id="componentSearch" class="form-control mb-3" type="search" placeholder="Search components..." />
+            <div class="mb-3" id="componentFilters"></div>
+            <div class="component-list" id="componentList" role="list"></div>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+          <div class="card-header">
+            <h6 class="mb-0">Brand &amp; Theme</h6>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label" for="brandName">Brand name</label>
+              <input id="brandName" class="form-control" type="text" placeholder="Brand name" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="brandLogo">Logo upload</label>
+              <input id="brandLogo" class="form-control" type="file" accept="image/*" />
+              <div class="mt-2 d-flex align-items-center gap-2">
+                <img id="logoPreview" class="logo-preview" alt="Brand logo preview" />
+                <div class="flex-grow-1">
+                  <label class="form-label" for="logoSize">Logo size</label>
+                  <input id="logoSize" class="form-range" type="range" min="24" max="120" value="48" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3" id="colorControls"></div>
+            <div class="alert alert-warning py-2 small d-none" id="contrastWarning" role="alert">
+              Contrast warning: your primary color may not be accessible on the neutral background.
+            </div>
+            <div class="swatch-grid mb-3" id="swatchGrid"></div>
+
+            <div class="border-top pt-3">
+              <h6>Typography</h6>
+              <div class="mb-2">
+                <label class="form-label" for="fontStack">Font stack</label>
+                <select id="fontStack" class="form-select">
+                  <option value="system">System</option>
+                  <option value="inter">Inter</option>
+                  <option value="poppins">Poppins</option>
+                  <option value="source-sans">Source Sans Pro</option>
+                </select>
+              </div>
+              <div class="row g-2">
+                <div class="col-6">
+                  <label class="form-label" for="baseFontSize">Base size</label>
+                  <input id="baseFontSize" class="form-control" type="number" min="14" max="20" value="16" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label" for="lineHeight">Line height</label>
+                  <input id="lineHeight" class="form-control" type="number" step="0.1" min="1.2" max="2" value="1.6" />
+                </div>
+              </div>
+              <div class="mt-2">
+                <label class="form-label" for="headingScale">Heading scale</label>
+                <input id="headingScale" class="form-range" type="range" min="1" max="1.5" step="0.05" value="1.2" />
+              </div>
+              <div class="mt-3 typography-preview" id="typographyPreview"></div>
+            </div>
+
+            <div class="border-top pt-3">
+              <h6>Theme Controls</h6>
+              <div class="row g-2">
+                <div class="col-6">
+                  <label class="form-label" for="radiusBase">Radius</label>
+                  <input id="radiusBase" class="form-range" type="range" min="0" max="24" value="8" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label" for="borderWidth">Border width</label>
+                  <input id="borderWidth" class="form-range" type="range" min="0" max="4" value="1" />
+                </div>
+              </div>
+              <div class="row g-2 mt-1">
+                <div class="col-6">
+                  <label class="form-label" for="shadowStrength">Shadow</label>
+                  <input id="shadowStrength" class="form-range" type="range" min="0" max="24" value="12" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label" for="hoverLift">Hover lift</label>
+                  <input id="hoverLift" class="form-range" type="range" min="0" max="8" value="2" />
+                </div>
+              </div>
+              <div class="row g-2 mt-1">
+                <div class="col-6">
+                  <label class="form-label" for="spacingUnit">Spacing unit</label>
+                  <input id="spacingUnit" class="form-range" type="range" min="4" max="24" value="8" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label" for="buttonShadow">Button shadow</label>
+                  <input id="buttonShadow" class="form-range" type="range" min="0" max="24" value="10" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="card-header">
+            <h6 class="mb-0">Component Properties</h6>
+          </div>
+          <div class="card-body" id="componentControls">
+            <p class="text-muted small">Select a component to edit its properties.</p>
+          </div>
+        </div>
+      </aside>
+
+      <section class="col-12 col-xl-8">
+        <div class="card shadow-sm h-100">
+          <div class="card-header d-flex flex-wrap align-items-center justify-content-between">
+            <div class="btn-group" role="tablist">
+              <button class="btn btn-outline-secondary active" data-preview-tab="component">Component</button>
+              <button class="btn btn-outline-secondary" data-preview-tab="templates">Templates</button>
+              <button class="btn btn-outline-secondary" data-preview-tab="kitchen">Kitchen Sink</button>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn btn-sm btn-outline-primary" id="copyHtml">Copy HTML</button>
+              <button class="btn btn-sm btn-outline-secondary" id="copyTokens">Copy Tokens</button>
+              <button class="btn btn-sm btn-outline-dark" id="copyCss">Copy CSS</button>
+            </div>
+          </div>
+          <div class="card-body preview-area" id="previewArea">
+            <div class="viewport-grid" id="viewportGrid">
+              <div class="viewport" data-viewport="mobile">
+                <div class="viewport-header">Mobile · 375px</div>
+                <div class="viewport-body" data-viewport-body="mobile"></div>
+              </div>
+              <div class="viewport" data-viewport="tablet">
+                <div class="viewport-header">Tablet · 768px</div>
+                <div class="viewport-body" data-viewport-body="tablet"></div>
+              </div>
+              <div class="viewport" data-viewport="desktop">
+                <div class="viewport-header">Desktop · 1200px</div>
+                <div class="viewport-body" data-viewport-body="desktop"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
