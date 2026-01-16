@@ -12,6 +12,12 @@
   --shadow-card: 0 12px 30px rgba(0, 0, 0, 0.08);
   --btn-shadow: 0 10px 18px rgba(13, 110, 253, 0.25);
   --hover-translate: translateY(-2px);
+  --border-style: solid;
+  --text-transform: none;
+  --letter-spacing: 0em;
+  --btn-padding-y: 10px;
+  --btn-padding-x: 18px;
+  --focus-ring-size: 0.25rem;
   --font-base: system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-size-base: 16px;
   --line-height-base: 1.6;
@@ -22,6 +28,7 @@ body {
   font-family: var(--font-base);
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
+  letter-spacing: var(--letter-spacing);
   background: var(--brand-neutral-bg);
   color: var(--brand-neutral-text);
 }
@@ -167,6 +174,30 @@ body {
   box-shadow: var(--shadow-card);
 }
 
+.btn,
+.nav-tabs .nav-link,
+.dropdown-menu,
+.form-control,
+.form-select {
+  border-style: var(--border-style);
+}
+
+.btn {
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  text-transform: var(--text-transform);
+  letter-spacing: var(--letter-spacing);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: var(--text-transform);
+  letter-spacing: var(--letter-spacing);
+}
+
 .btn-brand {
   background: var(--brand-primary);
   border-color: var(--brand-primary);
@@ -194,7 +225,7 @@ body {
 .btn:focus-visible,
 .form-control:focus-visible,
 .form-select:focus-visible {
-  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--brand-primary), transparent 70%);
+  box-shadow: 0 0 0 var(--focus-ring-size) color-mix(in srgb, var(--brand-primary), transparent 70%);
 }
 
 .skeleton {

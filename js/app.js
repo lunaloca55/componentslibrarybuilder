@@ -25,10 +25,16 @@ const DEFAULT_STATE = {
   theme: {
     radius: 8,
     borderWidth: 1,
+    borderStyle: "solid",
     shadowStrength: 12,
     hoverLift: 2,
     spacingUnit: 8,
-    buttonShadow: 10
+    buttonShadow: 10,
+    textTransform: "none",
+    letterSpacing: 0,
+    buttonPaddingY: 10,
+    buttonPaddingX: 18,
+    focusRing: 4
   },
   componentOverrides: {},
   favorites: [],
@@ -69,6 +75,12 @@ const elements = {
   hoverLift: document.getElementById("hoverLift"),
   spacingUnit: document.getElementById("spacingUnit"),
   buttonShadow: document.getElementById("buttonShadow"),
+  borderStyle: document.getElementById("borderStyle"),
+  textTransform: document.getElementById("textTransform"),
+  letterSpacing: document.getElementById("letterSpacing"),
+  focusRing: document.getElementById("focusRing"),
+  buttonPaddingY: document.getElementById("buttonPaddingY"),
+  buttonPaddingX: document.getElementById("buttonPaddingX"),
   componentList: document.getElementById("componentList"),
   componentFilters: document.getElementById("componentFilters"),
   componentSearch: document.getElementById("componentSearch"),
@@ -200,6 +212,12 @@ function applyTokens() {
   root.style.setProperty("--shadow-card", `0 ${state.theme.shadowStrength}px ${state.theme.shadowStrength * 2}px rgba(0,0,0,0.12)`);
   root.style.setProperty("--btn-shadow", `0 ${state.theme.buttonShadow}px ${state.theme.buttonShadow * 2}px rgba(13,110,253,0.25)`);
   root.style.setProperty("--hover-translate", `translateY(-${state.theme.hoverLift}px)`);
+  root.style.setProperty("--border-style", state.theme.borderStyle);
+  root.style.setProperty("--text-transform", state.theme.textTransform);
+  root.style.setProperty("--letter-spacing", `${state.theme.letterSpacing}em`);
+  root.style.setProperty("--btn-padding-y", `${state.theme.buttonPaddingY}px`);
+  root.style.setProperty("--btn-padding-x", `${state.theme.buttonPaddingX}px`);
+  root.style.setProperty("--focus-ring-size", `${state.theme.focusRing / 16}rem`);
   root.style.setProperty("--font-size-base", `${state.typography.baseSize}px`);
   root.style.setProperty("--line-height-base", state.typography.lineHeight);
   root.style.setProperty("--heading-scale", state.typography.headingScale);
@@ -447,10 +465,16 @@ function setupEventListeners() {
 
   elements.radiusBase.addEventListener("input", (event) => updateTheme("radius", Number(event.target.value)));
   elements.borderWidth.addEventListener("input", (event) => updateTheme("borderWidth", Number(event.target.value)));
+  elements.borderStyle.addEventListener("change", (event) => updateTheme("borderStyle", event.target.value));
   elements.shadowStrength.addEventListener("input", (event) => updateTheme("shadowStrength", Number(event.target.value)));
   elements.hoverLift.addEventListener("input", (event) => updateTheme("hoverLift", Number(event.target.value)));
   elements.spacingUnit.addEventListener("input", (event) => updateTheme("spacingUnit", Number(event.target.value)));
   elements.buttonShadow.addEventListener("input", (event) => updateTheme("buttonShadow", Number(event.target.value)));
+  elements.textTransform.addEventListener("change", (event) => updateTheme("textTransform", event.target.value));
+  elements.letterSpacing.addEventListener("input", (event) => updateTheme("letterSpacing", Number(event.target.value)));
+  elements.focusRing.addEventListener("input", (event) => updateTheme("focusRing", Number(event.target.value)));
+  elements.buttonPaddingY.addEventListener("input", (event) => updateTheme("buttonPaddingY", Number(event.target.value)));
+  elements.buttonPaddingX.addEventListener("input", (event) => updateTheme("buttonPaddingX", Number(event.target.value)));
 
   elements.componentSearch.addEventListener("input", renderComponentList);
 
@@ -684,10 +708,16 @@ function renderAll() {
   elements.headingScale.value = state.typography.headingScale;
   elements.radiusBase.value = state.theme.radius;
   elements.borderWidth.value = state.theme.borderWidth;
+  elements.borderStyle.value = state.theme.borderStyle;
   elements.shadowStrength.value = state.theme.shadowStrength;
   elements.hoverLift.value = state.theme.hoverLift;
   elements.spacingUnit.value = state.theme.spacingUnit;
   elements.buttonShadow.value = state.theme.buttonShadow;
+  elements.textTransform.value = state.theme.textTransform;
+  elements.letterSpacing.value = state.theme.letterSpacing;
+  elements.focusRing.value = state.theme.focusRing;
+  elements.buttonPaddingY.value = state.theme.buttonPaddingY;
+  elements.buttonPaddingX.value = state.theme.buttonPaddingX;
   elements.viewportPreset.value = state.viewportPreset;
 
   buildControls();

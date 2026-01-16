@@ -27,6 +27,12 @@ function generateThemeCSS(state) {
   --shadow-card: 0 ${theme.shadowStrength}px ${theme.shadowStrength * 2}px rgba(0,0,0,0.12);
   --btn-shadow: 0 ${theme.buttonShadow}px ${theme.buttonShadow * 2}px rgba(13,110,253,0.25);
   --hover-translate: translateY(-${theme.hoverLift}px);
+  --border-style: ${theme.borderStyle};
+  --text-transform: ${theme.textTransform};
+  --letter-spacing: ${theme.letterSpacing}em;
+  --btn-padding-y: ${theme.buttonPaddingY}px;
+  --btn-padding-x: ${theme.buttonPaddingX}px;
+  --focus-ring-size: ${theme.focusRing / 16}rem;
   --font-size-base: ${typography.baseSize}px;
   --line-height-base: ${typography.lineHeight};
   --heading-scale: ${typography.headingScale};
@@ -38,6 +44,7 @@ body {
   font-family: ${getFontFamily(typography.fontStack)};
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
+  letter-spacing: var(--letter-spacing);
   background: var(--brand-neutral-bg);
   color: var(--brand-neutral-text);
 }
@@ -52,6 +59,7 @@ h6 { font-size: ${sizes[5].toFixed(2)}px; }
 .btn, .card, .form-control, .accordion-item, .nav-tabs .nav-link {
   border-radius: var(--radius-base);
   border-width: var(--border-width);
+  border-style: var(--border-style);
 }
 
 .btn-brand {
@@ -65,6 +73,23 @@ h6 { font-size: ${sizes[5].toFixed(2)}px; }
 .btn-brand:focus {
   background: color-mix(in srgb, var(--brand-primary), #000 10%);
   border-color: color-mix(in srgb, var(--brand-primary), #000 12%);
+  transform: var(--hover-translate);
+}
+
+.btn {
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  text-transform: var(--text-transform);
+  letter-spacing: var(--letter-spacing);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: var(--text-transform);
+  letter-spacing: var(--letter-spacing);
 }
 
 .btn-ghost {
@@ -103,6 +128,12 @@ h6 { font-size: ${sizes[5].toFixed(2)}px; }
 .card-hover:hover {
   transform: var(--hover-translate);
   box-shadow: var(--shadow-card);
+}
+
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible {
+  box-shadow: 0 0 0 var(--focus-ring-size) color-mix(in srgb, var(--brand-primary), transparent 70%);
 }
 
 @media (prefers-reduced-motion: reduce) {
